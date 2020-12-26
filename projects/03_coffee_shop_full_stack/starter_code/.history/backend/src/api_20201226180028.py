@@ -93,11 +93,10 @@ def add_drink(payload):
     
     new_drink = Drink(title=new_title, recipe=json.dumps([new_recipe]))
     try:
-        print(new_drink.long())
         new_drink.insert()
         return jsonify({
             "success": True,
-            "drinks": [new_drink.long()]
+            "drinks": [new_drink]
         }), 200
     except:
         abort(422)
@@ -132,7 +131,7 @@ def edit_drink(payload, id):
         drink.update()
         return jsonify({
             "success": True,
-            "drinks": [drink.long()]
+            "drinks": [drink]
         }), 200
     except:
         abort(422)

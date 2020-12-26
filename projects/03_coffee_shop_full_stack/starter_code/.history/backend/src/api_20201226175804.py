@@ -85,7 +85,7 @@ def add_drink(payload):
     new_title = body.get('title', None)
     if not new_title:
         abort(400)
-    if len(Drink.query.filter(Drink.title == new_title).all()) > 0:
+    if Drink.query.where(Drink.title == new_title).all() > 0:
         return Error(400, "Title already exists.")
     new_recipe = body.get('recipe', None)
     if not new_recipe:
@@ -93,11 +93,10 @@ def add_drink(payload):
     
     new_drink = Drink(title=new_title, recipe=json.dumps([new_recipe]))
     try:
-        print(new_drink.long())
         new_drink.insert()
         return jsonify({
             "success": True,
-            "drinks": [new_drink.long()]
+            "drinks": [new_drink]
         }), 200
     except:
         abort(422)
@@ -132,7 +131,7 @@ def edit_drink(payload, id):
         drink.update()
         return jsonify({
             "success": True,
-            "drinks": [drink.long()]
+            "drinks": [drink]
         }), 200
     except:
         abort(422)
